@@ -9,10 +9,6 @@
 #define GREEN "green"
 #define BLUE "blue"
 
-#define RED_QTY 12
-#define GREEN_QTY 13
-#define BLUE_QTY 14
-
 using namespace std;
 
 int main() {
