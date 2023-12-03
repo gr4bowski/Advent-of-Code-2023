@@ -9,9 +9,10 @@ vector<string> split(const string source, const string delimiter)
     size_t         pos = 0;
 
     if (source.size() == 0 || delimiter.size() == 0)
-        throw std::invalid_argument("string.split neither argument can be an empty string");
+        throw std::invalid_argument("AOClib::split neither argument can be an empty string");
 
-    while ((pos = temp.find(delimiter)) != std::string::npos) {
+    while ((pos = temp.find(delimiter)) != std::string::npos)
+    {
         output.push_back(temp.substr(0, pos));
         temp.erase(0, pos + delimiter.length());
     }
@@ -20,16 +21,18 @@ vector<string> split(const string source, const string delimiter)
     return output;
 }
 
-bool isInVec(const auto searchFor, const vector<auto> target)
+int searchFor(const auto value, const vector<auto> target)
+// returns -1 if vector does not conatain given value in target vector
+// returns position on which value is found in target vector
 {
-    if (target.size() != 0 && typeid(searchFor) != typeid(target[0]))
+    if (target.size() != 0 && typeid(value) != typeid(target[0]))
     {
-        sprintf(buffer, "isInVec cannot look for %s in vector<%s>", typeid(searchFor).name(), typeid(target[0]).name());
+        sprintf(buffer, "AOClib::isInVec cannot look for %s in vector<%s>", typeid(value).name(), typeid(target[0]).name());
         throw std::invalid_argument(buffer);
     }
 
-    for (auto it : target)
-        if (it == searchFor)
-            return 1;
-    return 0;
+    for (unsigned int pos; pos < target.size(); pos++)
+        if (target[pos] == value)
+            return pos;
+    return -1;
 }
