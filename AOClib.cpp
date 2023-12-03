@@ -3,7 +3,8 @@ using namespace std;
 char buffer[500];
 
 vector<string> Split(const string delimiter, const string source)
-// splits source string on a given delimiter 
+// splits source string on a given delimiter
+// returns a vector of source's substrings
 {
     vector<string> output;
     string         temp = source;
