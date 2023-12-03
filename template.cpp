@@ -10,9 +10,5 @@ using namespace std;
 
 int main() {
     turbo
-    ui t;
-    cin >> t;
-    while (t--) {
 
-    }
 }
