@@ -9,11 +9,12 @@ vector<string> Split(const string delimiter, const string source)
     string         temp = source;
     size_t         pos = 0;
 
-
     // check if either input string is empty
     if (source.size() == 0 || delimiter.size() == 0)
-        throw std::invalid_argument("AOClib::Split neither argument can be an empty string");
-
+    {
+        sprintf(buffer, "AOClib::Split neither argument can be an empty string");
+        throw std::invalid_argument(buffer);
+    }
 
     while ((pos = temp.find(delimiter)) != std::string::npos)
     {
@@ -43,7 +44,6 @@ int SearchFor(const auto value, const vector<auto> target)
                 typeid(value).name(), typeid(target[0]).name());
         throw std::invalid_argument(buffer);
     }
-
 
     for (unsigned int pos; pos < target.size(); pos++)
         if (target[pos] == value)
