@@ -3,6 +3,7 @@
 using namespace std;
 
 #define IS_NUMERIC(c) (c >= '0' && c <= '9')
+#define PRINT(val) std::cout << std::endl << val << std::endl; 
 
 char buffer[500];
 
@@ -50,38 +51,27 @@ int SearchFor(const auto value, const vector<auto> target)
         throw std::invalid_argument(buffer);
     }
 
-    for (unsigned int pos; pos < target.size(); pos++)
-        if (target[pos] == value)
-            return pos;
-
-    return -1;
+    return std::find(target.begin(), target.end(), value);
 }
 
-int RemoveSubstrings(const string substring, string *target)
+int RemoveSubstrings(const string substring, string &target)
 // removes all occurrences of a given substring in target
 // returns count of occurrences of substring in target
 {
     string output;
 
-    // check if target string is null
-    if (target == NULL)
-    {
-        sprintf(buffer, "AOClib::RemoveSubstrings target cannot be null");
-        throw std::invalid_argument(buffer);
-    }
-    // check if either input string is empty
-    if (substring.size() == 0 || target->size() == 0)
+    if (substring.size() == 0 || target.size() == 0)
     {
         sprintf(buffer, "AOClib::RemoveSubstrings neither argument can be an empty string");
         throw std::invalid_argument(buffer);
     }
 
-    vector<string> vec = Split(substring, *target);
+    vector<string> vec = Split(substring, target);
 
     for (string it : vec)
         output.append(it);
     
-    *target = output;
+    target = output;
 
     return vec.size()-1;
 }
@@ -138,7 +128,7 @@ bool IsInBounds(const int pos, const string str)
     return pos >= 0 && pos <= (int)str.size() - 1;
 }
 
-int FindChar(const vector<string> vector2D, const int posX, const int posY, const int radius, const vector<char> chars_to_find)
+int FindCharsInRadius(const vector<string> vector2D, const int posX, const int posY, const int radius, const vector<char> chars_to_find)
 // looks through vector<string> for given chars in given radius away from point(posX, posY)
 // returns the ammount of chars found
 // all strings in vector2D should be of the same length
@@ -189,7 +179,7 @@ int FindChar(const vector<string> vector2D, const int posX, const int posY, cons
 }
 
 // TO BE TESTED
-bool ArePartOfOneNumber(const string str, const unsigned int posA, const unsigned int posB)
+bool ArePartOfOneNumber(const unsigned int posA, const unsigned int posB, const string str)
 // checks if numbers at posA and posB are both part of the same number
 // returns false if a non-numeric value is found anywhere between posA & posB 
 // returns true if posA == posB or if none non-numeric values are found in between
@@ -227,4 +217,57 @@ bool ArePartOfOneNumber(const string str, const unsigned int posA, const unsigne
     }
 
     return true;
+}
+
+static int CompareVectors(const vector<auto> vecA, const vector<auto> vecB)
+{
+    unsigned int count = 0;
+
+    // check if both vectors are non-empty
+    if (vecA.size() == 0 || vecB.size() == 0)
+    {
+        sprintf(buffer, "AOClib::CompareVectors neither vector can be empty");
+        throw std::invalid_argument(buffer);
+    }
+    // check if both vectors contain the variable type
+    if (typeid(vecA[0]) != typeid(vecB[0]))
+    {
+        sprintf(buffer, "AOClib::CompareVectors both vectors must contain same variable types");
+        throw std::invalid_argument(buffer);
+    }
+
+    for (auto &it : vecA)
+        if (std::find(vecB.begin(), vecB.end(), it) != vecB.end())
+            count++;
+
+    return count;
+}
+
+static inline void ReplaceAll(const string from, const string to, string &str)
+// replaces all occurrences of substring <from> with substring <to> 
+{
+    size_t pos = 0;
+
+    // check if from is a non-empty string
+    if (from.size() == 0)
+    {
+        sprintf(buffer, "AOClib::ReplaceAll string from cannot be empty");
+        throw std::invalid_argument(buffer);
+    }
+
+    while ((pos = str.find(from, pos)) != std::string::npos) {
+        str.replace(pos, from.length(), to);
+        pos += to.length();
+    }
+}
+
+static vector<int> ConvertVectorStringToInt(vector<string> vec)
+// converts a vector of numeric strings to a vector of intigers
+{
+    vector<int> output;
+
+    for (string str : vec)
+        output.push_back(stoi(str));
+    
+    return output;
 }
