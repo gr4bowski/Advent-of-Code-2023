@@ -139,33 +139,89 @@ bool IsInBounds(int pos, string str)
 }
 
 int FindChar(vector<string> vector2D, int posX, int posY, int radius, vector<char> chars_to_find)
-// seg fault
+// looks through vector<string> for given chars in given radius away from point(posX, posY)
+// returns the ammount of chars found
+// all strings in vector2D should be of the same length
 {
-    unsigned int found_count = 0;
+    unsigned int count = 0;
     vector<int>  rangeX, rangeY;
     int          floor, celling;
 
-    floor = (IsInBounds(posX - radius, vector2D)) ? 0 - radius : 0;
-    celling = (IsInBounds(posX + radius, vector2D)) ? radius : vector2D.size() - 1;
+    // check if either input array is empty
+    if (vector2D.size() == 0 || vector2D[0].size() == 0)
+    {
+        sprintf(buffer, "AOClib::FindChar neither vector nor strings inside can be empty");
+        throw std::invalid_argument(buffer);
+    }
+    // check if there are given characters to search for
+    if (chars_to_find.size() == 0)
+    {
+        sprintf(buffer, "AOClib::FindChar chars_to_find vector cannot be empty");
+        throw std::invalid_argument(buffer);       
+    }
+    // check if radius and all positions are greater than 0
+    if (posX < 0 || posY < 0 || radius < 0)
+    {
+        sprintf(buffer, "AOClib::FindChar all positions and radius must be greater than 0");
+        throw std::invalid_argument(buffer);  
+    }
+
+    floor = (IsInBounds(posX - radius, vector2D)) ? 0 - radius : 0 - posX;
+    celling = (IsInBounds(posX + radius, vector2D)) ? radius : vector2D.size() - 1 - posX;
 
     for (int i = floor; i <= celling; i++)
         rangeX.push_back(i);
 
     floor = 0; celling = 0;
 
-    floor = (IsInBounds(posY - radius, vector2D[0])) ? 0 - radius : 0;
-    celling = (IsInBounds(posY + radius, vector2D[0])) ? radius : vector2D[0].size() - 1;
+    floor = (IsInBounds(posY - radius, vector2D[0])) ? 0 - radius : 0 - posY;
+    celling = (IsInBounds(posY + radius, vector2D[0])) ? radius : vector2D[0].size() - 1 - posY;
 
-    for (int i = floor; i < celling; i++)
+    for (int i = floor; i <= celling; i++)
         rangeY.push_back(i);
 
-    try {
     for (int x : rangeX)
         for (int y : rangeY)
-            if (std::find(chars_to_find.begin(), chars_to_find.end(), vector2D[x][y]) != chars_to_find.end())
-                found_count++;
-    } catch (...) {
-        cout << "here" << endl;
+            if (std::find(chars_to_find.begin(), chars_to_find.end(), vector2D[posX + x][posY + y]) != chars_to_find.end())
+                count++;
+
+    return count;
+}
+
+// TO BE TESTED
+bool ArePartOfOneNumber(string str, unsigned int posA, unsigned int posB)
+// checks if numbers at posA and posB are both part of the same number
+// returns false if a non-numeric value is found anywhere between posA & posB 
+// returns true if posA == posB or if none non-numeric values are found in between
+{
+    // check if string str is not empty
+    if (str.size() == 0)
+    {
+        sprintf(buffer, "AOClib::ArePartOfOneNumber input string cannot be empty");
+        throw std::invalid_argument(buffer);     
     }
-    return found_count;
+    // check if both positions fit into given string
+    if (!IsInBounds(posA, str) || !IsInBounds(posB, str))
+    {
+        sprintf(buffer, "AOClib::ArePartOfOneNumber both posA and posB must fit into the given string");
+        throw std::invalid_argument(buffer);     
+    }
+    // check if there are numbers at both positions in given string
+    if (!IS_NUMERIC(str[posA]) || !IS_NUMERIC(str[posB]))
+    {
+        sprintf(buffer, "AOClib::ArePartOfOneNumber there must be numeric values at both positions in the given string");
+        throw std::invalid_argument(buffer);     
+    }
+
+    if (posA == posB)
+        return true;
+    else if (posA < posB)
+        for (unsigned int i = posA; i <= posB; i++)
+            if (!IS_NUMERIC(str[i]))
+                return false;
+    else if (posA > posB)
+        for (unsigned int i = posB; i <= posA; i++)
+            if (!IS_NUMERIC(str[i]))
+                return false;
+    return true;
 }
