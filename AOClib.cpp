@@ -86,7 +86,7 @@ int RemoveSubstrings(const string substring, string *target)
     return vec.size()-1;
 }
 
-void PrintVector(vector<auto> vec)
+void PrintVector(const vector<auto> vec)
 // prints a vector
 {
     for (auto &it : vec)
@@ -94,7 +94,7 @@ void PrintVector(vector<auto> vec)
     cout << endl;
 }
 
-int FindNumberInString(string str, int pos)
+int FindNumberInString(const string str, const int pos)
 // returns number found at given position in str
 {
     unsigned int begin = -1;
@@ -126,19 +126,19 @@ int FindNumberInString(string str, int pos)
     return stoi(str.substr(begin, end - begin + 1));
 }
 
-bool IsInBounds(int pos, vector<auto> vector)
+bool IsInBounds(const int pos, const vector<auto> vector)
 // checks if pos fits in bounds of a given vector
 {
     return pos >= 0 && pos <= (int)vector.size() - 1;
 }
 
-bool IsInBounds(int pos, string str)
+bool IsInBounds(const int pos, const string str)
 // checks if pos first in bounds of a given string
 {
     return pos >= 0 && pos <= (int)str.size() - 1;
 }
 
-int FindChar(vector<string> vector2D, int posX, int posY, int radius, vector<char> chars_to_find)
+int FindChar(const vector<string> vector2D, const int posX, const int posY, const int radius, const vector<char> chars_to_find)
 // looks through vector<string> for given chars in given radius away from point(posX, posY)
 // returns the ammount of chars found
 // all strings in vector2D should be of the same length
@@ -189,7 +189,7 @@ int FindChar(vector<string> vector2D, int posX, int posY, int radius, vector<cha
 }
 
 // TO BE TESTED
-bool ArePartOfOneNumber(string str, unsigned int posA, unsigned int posB)
+bool ArePartOfOneNumber(const string str, const unsigned int posA, const unsigned int posB)
 // checks if numbers at posA and posB are both part of the same number
 // returns false if a non-numeric value is found anywhere between posA & posB 
 // returns true if posA == posB or if none non-numeric values are found in between
@@ -215,13 +215,16 @@ bool ArePartOfOneNumber(string str, unsigned int posA, unsigned int posB)
 
     if (posA == posB)
         return true;
-    else if (posA < posB)
+    else if (posA < posB) {
         for (unsigned int i = posA; i <= posB; i++)
             if (!IS_NUMERIC(str[i]))
                 return false;
-    else if (posA > posB)
+    }
+    else if (posA > posB) {
         for (unsigned int i = posB; i <= posA; i++)
             if (!IS_NUMERIC(str[i]))
                 return false;
+    }
+
     return true;
 }
