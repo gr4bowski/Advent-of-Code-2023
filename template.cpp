@@ -11,4 +11,13 @@ using namespace std;
 int main() {
     turbo
 
+    while (true) {
+        string line;
+
+        getline(cin, line);
+        
+        if (line == "X")
+            break;
+    }
+
 }

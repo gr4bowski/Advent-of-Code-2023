@@ -16,7 +16,7 @@ vector<string> Split(const string delimiter, const string source)
     size_t         pos = 0;
 
     // check if either input string is empty
-    if (source.size() == 0 || delimiter.size() == 0)
+    if (source.length() == 0 || delimiter.length() == 0)
     {
         sprintf(buffer, "AOClib::Split neither argument can be an empty string");
         throw std::invalid_argument(buffer);
@@ -243,10 +243,10 @@ static int CompareVectors(const vector<auto> vecA, const vector<auto> vecB)
     return count;
 }
 
-static inline void ReplaceAll(const string from, const string to, string &str)
+static inline int ReplaceAll(const string from, const string to, string &str)
 // replaces all occurrences of substring <from> with substring <to> 
 {
-    size_t pos = 0;
+    size_t replaced = 0, pos = 0;
 
     // check if from is a non-empty string
     if (from.size() == 0)
@@ -258,10 +258,13 @@ static inline void ReplaceAll(const string from, const string to, string &str)
     while ((pos = str.find(from, pos)) != std::string::npos) {
         str.replace(pos, from.length(), to);
         pos += to.length();
+        replaced++;
     }
+
+    return replaced;
 }
 
-static vector<int> ConvertVectorStringToInt(vector<string> vec)
+vector<int> ConvertVectorStringToInt(vector<string> vec)
 // converts a vector of numeric strings to a vector of intigers
 {
     vector<int> output;
@@ -270,4 +273,22 @@ static vector<int> ConvertVectorStringToInt(vector<string> vec)
         output.push_back(stoi(str));
     
     return output;
+}
+
+void EraseLeadingSpaces(string &str)
+// takes non-empty string
+// returns string without leading spaces
+{
+    // check if either input string is empty
+    if (str.length() == 0)
+    {
+        sprintf(buffer, "AOClib::EraseLeadingSpaces input string cannot be empty");
+        throw std::invalid_argument(buffer);
+    }
+    for (size_t pos = 0; pos < str.length(); pos++)
+        if (str[pos] != ' ') {
+            str.erase(str.begin(), str.begin() + pos);
+            break;
+        }
+
 }

@@ -22,6 +22,8 @@ bool ArePartOfOneNumber(const unsigned int posA, const unsigned int posB, const 
 
 static int CompareVectors(const vector<auto> vecA, const vector<auto> vecB);
 
-static inline void ReplaceAll(const string from, const string to, string &str);
+static inline int ReplaceAll(const string from, const string to, string &str);
 
-static vector<int> ConvertVectorStringToInt(vector<string> vec);
+vector<int> ConvertVectorStringToInt(vector<string> vec);
+
+void EraseLeadingSpaces(string &str);
